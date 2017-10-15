@@ -10,12 +10,19 @@ contract BadAuction is AuctionInterface {
 	 * Must return false on failure and send people
 	 * their funds back
 	 */
+	 uint256 bigBid;
+	 address winning;
 	function bid() payable external returns (bool) {
-		// YOUR CODE HERE
+		if(msg.value < bigBid) throw;
+		if(winning!=0){
+		    if(!winning.send(bigBid)) throw;
+		}
+		winning = msg.sender();
+		bigBid = msg.value();
 	}
 
 	/* Give people their funds back */
 	function () payable {
-		// YOUR CODE HERE
+    	revert();
 	}
 }
