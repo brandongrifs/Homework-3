@@ -15,10 +15,14 @@ contract BadAuction is AuctionInterface {
 	function bid() payable external returns (bool) {
 		if(msg.value < bigBid) throw;
 		if(winning!=0){
-		    if(!winning.send(bigBid)) throw;
+		    if(!winning.send(bigBid)){
+		    	return false;
+			throw;
+		    }
 		}
 		winning = msg.sender();
 		bigBid = msg.value();
+		return true;
 	}
 
 	/* Give people their funds back */
