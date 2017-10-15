@@ -15,7 +15,7 @@ contract GoodAuction is AuctionInterface {
 	 * retrieve their funds
 	 */
 	function bid() payable external returns(bool) {
-		if (msg.value < highestBid) throw;
+		if (msg.value < highestBid) return false;
 
         if (highestBidder != 0) {refunds[winning] += bigBid;}
 
@@ -30,7 +30,9 @@ contract GoodAuction is AuctionInterface {
 		refunds[msg.sender] = 0;
 		if(!msg.sender.send(refund)){
 		    refunds[msg.sender] = refund;
+		    return false;
 		}
+		return true;
 	}
 
 	/* Allow users to check the amount they can withdraw */
